@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WEC-Pro Project Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: { colors: { primary: { 600: "#003399", 700: "#003399" } } },
+        },
+      };
+    </script>
+
+    <style>
+      html, body {
+        margin: 0; padding: 0; height: 100%;
+        overflow-x: hidden;
+        color: #0f172a; /* slate-900 */
+        font-family:
+          ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      }
+      /* Fixed background canvas behind content */
+      #waveCanvas {
+        position: fixed; inset: 0; z-index: -1; width: 100vw; height: 100vh;
+      }
+      /* Smooth collapsible panels (mobile menu) */
+      .collapsible { max-height: 0; overflow: hidden; transition: max-height 240ms ease; }
+      .collapsible.open { max-height: 320px; }
+      /* Slight blur under sticky header */
+      .header-blur { background: rgba(255,255,255,0.9); backdrop-filter: saturate(120%) blur(6px); }
+    </style>
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <!-- React mount point -->
+    <div id="root"></div>
+
+    <!-- Fixed background canvas (waves) -->
+    <canvas id="waveCanvas"></canvas>
+
+    <!-- React + ReactDOM + Babel (dev only, compiles JSX in browser) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- ===== App code (JSX compiled in browser) ===== -->
+    <script type="text/babel">
+      const { useEffect, useRef, useState } = React;
+
+      /* --- Minimal inline SVG icons (no external deps) --- */
+      const Icon = ({ name, size = 24, stroke = 2, className = "" }) => {
+        const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none",
+                         stroke: "currentColor", strokeWidth: stroke, strokeLinecap: "round",
+                         strokeLinejoin: "round", className };
+        switch (name) {
+          case "menu":
+            return (<svg {...common}><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>);
+          case "x":
+            return (<svg {...common}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>);
+          case "chevron-down":
+            return (<svg {...common}><polyline points="6 9 12 15 18 9" /></svg>);
+          default: return null;
+        }
+      };
+
+      /* --- Collapsible with measured height for smooth animation --- */
+      const Collapsible = ({ open, children, id }) => {
+        const ref = useRef(null);
+        const [maxH, setMaxH] = useState(0);
+        useEffect(() => {
+          const el = ref.current; if (!el) return;
+          if (open) {
+            setMaxH(el.scrollHeight);
+            const r = new ResizeObserver(() => setMaxH(el.scrollHeight));
+            r.observe(el); return () => r.disconnect();
+          } else setMaxH(0);
+        }, [open, children]);
+        return (
+          <div id={id} className={`collapsible ${open ? "open" : ""}`} style={{ maxHeight: open ? maxH : 0 }}>
+            <div ref={ref}>{children}</div>
+          </div>
+        );
+      };
+
+      /* --- Main App --- */
+      function App() {
+        const [mobileOpen, setMobileOpen] = useState(false);
+        const [openAcc, setOpenAcc] = useState(null); // 'products' | 'services' | 'about' | null
+
+        const navItems = [
+          { title: "Contents", key: "services", links: ["Context", "Resources and technologies", "Publications"] },
+          { title: "F.A.Q.",    key: "FAQ",    links: ["Frequently Asked Questions"] },
+          { title: "About",    key: "about",    links: ["Contacts"] },
+        ];
+
+        // Close mobile menu when resizing to desktop
+        useEffect(() => {
+          const onResize = () => { if (window.innerWidth >= 768 && mobileOpen) setMobileOpen(false); };
+          window.addEventListener("resize", onResize);
+          return () => window.removeEventListener("resize", onResize);
+        }, [mobileOpen]);
+
+        return (
+          <div className="min-h-screen flex flex-col">
+            {/* Header */}
+            <header className="w-full sticky top-0 z-50 header-blur shadow-md">
+              <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
+                <a href="#" className="flex items-center gap-2">
+                  <span className="inline-block rounded bg-primary-600 text-white px-2 py-1 text-sm font-semibold">WEC-Pro</span>
+                  <span className="text-2xl font-bold tracking-tight">Progressing Wave Energy Conversion via Large-Scale Additive Manufacturing</span>
+                </a>
+
+                {/* Desktop Nav */}
+                <nav className="hidden md:flex items-center gap-6">
+                  {navItems.map((item) => (
+                    <div key={item.key} className="relative group">
+                      <button className="flex items-center gap-1 hover:text-primary-700">
+                        {item.title} <Icon name="chevron-down" size={16} />
+                      </button>
+                      <div className="absolute left-0 mt-2 hidden group-hover:block group-focus-within:block bg-white shadow-lg rounded-xl p-3 w-48">
+                        {item.links.map((link, i) => (
+                          <a key={i} href="#" className="block px-4 py-2 rounded hover:bg-gray-100">{link}</a>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </nav>
+
+                {/* Mobile Hamburger */}
+                <button
+                  className="md:hidden p-2 rounded hover:bg-gray-100"
+                  aria-expanded={mobileOpen}
+                  aria-controls="mobileNav"
+                  onClick={() => setMobileOpen((v) => !v)}
+                >
+                  <Icon name={mobileOpen ? "x" : "menu"} size={28} />
+                </button>
+              </div>
+
+              {/* Mobile Menu */}
+              <nav id="mobileNav" className={`md:hidden bg-gray-50 border-t border-gray-100 ${mobileOpen ? "" : "hidden"}`}>
+                <ul className="px-2 py-2">
+                  {navItems.map((item) => {
+                    const isOpen = openAcc === item.key;
+                    return (
+                      <li key={item.key} className="border-b border-gray-200">
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-3 font-medium"
+                          aria-expanded={isOpen}
+                          onClick={() => setOpenAcc(isOpen ? null : item.key)}
+                        >
+                          <span>{item.title}</span>
+                          <span className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>
+                            <Icon name="chevron-down" size={20} />
+                          </span>
+                        </button>
+                        <Collapsible open={isOpen} id={`acc-${item.key}`}>
+                          {item.links.map((link, i) => (
+                            <a key={i} href="#" className="block px-6 py-2 hover:bg-gray-100 rounded" onClick={() => setMobileOpen(false)}>
+                              {link}
+                            </a>
+                          ))}
+                        </Collapsible>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+            </header>
+
+            {/* Main */}
+            <main className="flex-1">
+              {/* Hero */}
+              <section className="relative">
+                <div className="max-w-7xl mx-auto px-4 py-10 md:py-24">
+                  <div className="max-w-2xl">
+                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
+                      Welcome to <span className="text-primary-700">WEC-Pro</span>
+                    </h1>
+                    <p className="mt-5 text-lg text-gray-700">
+                      Accelerating the commercial future of wave energy through advanced additive manufacturing.
+                    </p>
+                    <div className="mt-4 flex gap-3">
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+             
+{/* Placeholder cards */}
+<section className="bg-white/50">
+  <div className="max-w-7xl mx-auto px-4 py-2 grid md:grid-cols-2 gap-8">
+    <div className="p-6 bg-white rounded-xl shadow-sm">
+      <h3 className="text-xl font-semibold">Project description</h3>
+      <p className="mt-2 text-gray-600">
+        WEC-Pro tackles key barriers to wave energy by using large-scale additive manufacturing to enhance wave energy devices design, performance, and cost-efficiency. The project develops integrated modelling tools and open-source resources to support scalable, commercially viable WEC technologies.
+      </p>
+    </div>
+    <div className="p-6 bg-white rounded-xl shadow-sm">
+      <h3 className="text-xl font-semibold">Objectives</h3>
+      <p className="mt-2 text-gray-600">
+        WEC-Pro aims to make wave energy converters commercially viable by integrating large-scale additive manufacturing into their design, optimization, and testing. The project develops new modelling tools, reduces production costs, and validates efficient WEC prototypes in a wave tank lab.
+      </p>
+    </div>
+  </div>
+
+              </section>
+            </main>
+
+<footer className="mt-2 border-t bg-white/90 backdrop-blur">
+  <div className="max-w-7xl mx-auto px-4 py-2 grid gap-8 md:grid-cols-4">
+    {/* Colonna 1: Brand + Loghi */}
+    <div>
+	
+      <p className="mt-3 text-gray-600">
+        Acknowledgements
+      </p>
+
+      {/* === LOGHI NEL FOOTER === */}
+
+
+<div className="mt-4 flex justify-start items-center gap-16">
+  <img
+    src="logo1.jpg"
+    alt="Partner logo 1"
+    className="h-40 w-auto object-contain"
+    loading="lazy"
+  />
+  <img
+    src="logo2.jpg"
+    alt="Partner logo 2"
+    className="h-40 w-auto object-contain"
+    loading="lazy"
+  />
+   <img
+    src="logo3.jpg"
+    alt="Partner logo 3"
+    className="h-40 w-auto object-contain"
+    loading="lazy"
+  />
+   <img
+    src="logo4.jpg"
+    alt="Partner logo 4"
+    className="h-40 w-auto object-contain"
+    loading="lazy"
+  />
+  
+  
+</div>
+
+
+    </div>
+    </div>
+</footer>
+
+
+
+
+
+
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+
+    <!-- ===== Waves background (animated) ===== -->
+    <script>
+      const canvas = document.getElementById("waveCanvas");
+      const ctx = canvas.getContext("2d");
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      const waves = [];
+      const numWaves = 5;
+      for (let i = 0; i < numWaves; i++) {
+        waves.push({
+          amplitude: 10 + Math.random() * 20,
+          frequency: 0.01 + Math.random() * 0.01,
+          phase: Math.random() * 2 * Math.PI,
+          speed: 0.02 + Math.random() * 0.02,
+          color: `rgba(10, 60, 100, ${0.1 + i * 0.1})`,
+        });
+      }
+
+      let speedFactor = 0.2;
+      let rafId = null;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        waves.forEach((wave) => {
+          wave.phase += wave.speed * speedFactor;
+          ctx.beginPath();
+          for (let x = 0; x < canvas.width; x++) {
+            const y = canvas.height / 2.3 + Math.sin(x * wave.frequency + wave.phase) * wave.amplitude;
+            ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = wave.color;
+          ctx.stroke();
+        });
+        rafId = requestAnimationFrame(draw);
+      }
+
+      // Respect prefers-reduced-motion
+      const mediaReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+      function startOrStop() {
+        if (mediaReduce.matches) {
+          if (rafId) cancelAnimationFrame(rafId);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          rafId = null;
+        } else {
+          if (!rafId) draw();
+        }
+      }
+      mediaReduce.addEventListener?.("change", startOrStop);
+      startOrStop();
+
+      // Mouse interaction (speed up waves on move)
+      let lastMoveTime = Date.now();
+      document.addEventListener("mousemove", () => {
+        speedFactor = 1.0;
+        lastMoveTime = Date.now();
+      });
+      setInterval(() => {
+        const now = Date.now();
+        if (now - lastMoveTime > 1000) speedFactor = 0.2;
+      }, 120);
+    </script>
+  </body>
+</html>
