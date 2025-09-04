@@ -33,6 +33,28 @@
       .collapsible.open { max-height: 320px; }
       /* Slight blur under sticky header */
       .header-blur { background: rgba(255,255,255,0.9); backdrop-filter: saturate(120%) blur(6px); }
+	  
+	  .carousel {
+  width: 500%;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 4rem; /* adjust spacing */
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+	  
     </style>
   </head>
 
@@ -95,6 +117,7 @@
         const navItems = [
           { title: "The Project", key: "Abstract", links: ["Abstract"] },
           { title: "Context", key: "Context", links: ["Context"] },
+          { title: "Resources",    key: "Resources",    links: ["Resources"] },
           { title: "F.A.Q.",    key: "FAQ",    links: ["FAQ"] },
           { title: "About",    key: "Contacts",    links: ["Contacts"] },
         ];
@@ -125,6 +148,7 @@
                         {item.links.map((link, i) => (
 						<a key={i} href={link === "Abstract" ? "abstract.html" :
 						link === "Context" ? "context.html" :
+						link === "Resources" ? "resources.html" :
 						link === "FAQ" ? "FAQ.html" :
 						link === "Contacts" ? "contacts.html" :"#"}  className="block px-4 py-2 rounded hover:bg-gray-100">
 						{link}
@@ -165,9 +189,12 @@
                         </button>
                         <Collapsible open={isOpen} id={`acc-${item.key}`}>
                           {item.links.map((link, i) => (
-                            <a key={i} href="#" className="block px-6 py-2 hover:bg-gray-100 rounded" onClick={() => setMobileOpen(false)}>
-                              {link}
-                            </a>
+                           <a key={i} href={link === "Abstract" ? "abstract.html" :
+						link === "Context" ? "context.html" :
+						link === "FAQ" ? "FAQ.html" :
+						link === "Contacts" ? "contacts.html" :"#"}  className="block px-4 py-2 rounded hover:bg-gray-100">
+						{link}
+						</a>
                           ))}
                         </Collapsible>
                       </li>
@@ -223,36 +250,22 @@
       <p className="mt-3 text-gray-600">
         Acknowledgements
       </p>
+	  
+{/* === LOGHI NEL FOOTER === */}
+<div className="carousel">
+  <div className="carousel-track">
 
-      {/* === LOGHI NEL FOOTER === */}
+    <img src="Logo1.jpg" alt="Partner logo 1" className="h-40 w-auto object-contain" loading="lazy" />
+    <img src="Logo2.jpg" alt="Partner logo 2" className="h-40 w-auto object-contain" loading="lazy" />
+    <img src="Logo3.jpg" alt="Partner logo 3" className="h-40 w-auto object-contain" loading="lazy" />
+    <img src="Logo4.jpg" alt="Partner logo 4" className="h-40 w-auto object-contain" loading="lazy" />
 
-<div className="mt-4 flex justify-start items-center gap-16">
-  <img
-    src="Logo1.jpg"
-    alt="Partner logo 1"
-    className="h-40 w-auto object-contain"
-    loading="lazy"
-  />
-  <img
-    src="Logo2.jpg"
-    alt="Partner logo 2"
-    className="h-40 w-auto object-contain"
-    loading="lazy"
-  />
-   <img
-    src="Logo3.jpg"
-    alt="Partner logo 3"
-    className="h-40 w-auto object-contain"
-    loading="lazy"
-  />
-   <img
-    src="Logo4.jpg"
-    alt="Partner logo 4"
-    className="h-40 w-auto object-contain"
-    loading="lazy"
-  />
-  
-  
+    {/* duplicate logos for seamless loop */}
+    <img src="Logo1.jpg" alt="Partner logo 1" className="h-40 w-auto object-contain" loading="lazy" />
+    <img src="Logo2.jpg" alt="Partner logo 2" className="h-40 w-auto object-contain" loading="lazy" />
+    <img src="Logo3.jpg" alt="Partner logo 3" className="h-40 w-auto object-contain" loading="lazy" />
+    <img src="Logo4.jpg" alt="Partner logo 4" className="h-40 w-auto object-contain" loading="lazy" />
+  </div>
 </div>
 
 
@@ -305,7 +318,7 @@
           wave.phase += wave.speed * speedFactor;
           ctx.beginPath();
           for (let x = 0; x < canvas.width; x++) {
-            const y = canvas.height / 2.3 + Math.sin(x * wave.frequency + wave.phase) * wave.amplitude;
+            const y = canvas.height / 2.1 + Math.sin(x * wave.frequency + wave.phase) * wave.amplitude;
             ctx.lineTo(x, y);
           }
           ctx.strokeStyle = wave.color;
@@ -339,5 +352,27 @@
         if (now - lastMoveTime > 1000) speedFactor = 0.2;
       }, 120);
     </script>
+	
+	
+	<!-- Visitor counter (privacy-friendly, no cookies) -->
+<script data-goatcounter="https://wecpro.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<footer style="text-align:left; font-size:0.9em; margin-top:20px;">
+  <p>
+    © 2025 WEC-Pro Project
+    <br>
+    This website does not use cookies for tracking or advertising. 
+    Only anonymous visit counts are collected for statistical purposes 
+    without storing personal data.
+	Views and opinions expressed in this website are those of the author(s) only and do not necessarily reflect those of the European Union or the European Innovation Council and the Research Executive Agency (REA) and the Portuguese FCT fundation. Neither the European Union nor other granting authorities can be held responsible for them.
+  </p>
+  <p id="visitor-count">Visitors: loading...</p>
+</footer>
+
+<script>
+	
+	
+	
   </body>
 </html>
