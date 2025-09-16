@@ -354,38 +354,34 @@
     </script>
 	
 	
-	<!-- Visitor counter (privacy-friendly, no cookies) -->
-<script data-goatcounter="https://wecpro.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+	    <!-- Visitor counter (privacy-friendly, no cookies) -->
+    <script data-goatcounter="https://wecpro.goatcounter.com/count"
+            src="//gc.zgo.at/count.js"></script>
 
-<footer style="text-align:left; font-size:0.9em; margin-top:20px;">
+    <footer style="text-align:left; font-size:0.9em; margin-top:20px;">
+      <p>
+        © 2025 WEC-Pro Project
+        <br>
+        This website does not use cookies for tracking or advertising. 
+        Only anonymous visit counts are collected for statistical purposes 
+        without storing personal data.
+        Views and opinions expressed in this website are those of the author(s) only and do not necessarily reflect those of the European Union or the European Innovation Council and the Research Executive Agency (REA) and the Portuguese FCT fundation. Neither the European Union nor other granting authorities can be held responsible for them.
+      </p>
+      <p id="visitor-count">Visitors: loading...</p>
+    </footer>
 
-  <p>
-    © 2025 WEC-Pro Project
-    <br>
-    This website does not use cookies for tracking or advertising. 
-    Only anonymous visit counts are collected for statistical purposes 
-    without storing personal data.
-	Views and opinions expressed in this website are those of the author(s) only and do not necessarily reflect those of the European Union or the European Innovation Council and the Research Executive Agency (REA) and the Portuguese FCT fundation. Neither the European Union nor other granting authorities can be held responsible for them.
-  </p>
-  <p id="visitor-count">Visitors: loading...</p>
-</footer>
-
-<script>
-  // Fetch the total visitor count from GoatCounter API
-  fetch('https://wecpro.goatcounter.com/counter/wecpro.json')
-    .then(r => r.json())
-    .then(data => {
-      document.getElementById('visitor-count').innerText =
-        'Visitors: ' + data.count;
-    })
-    .catch(err => {
-      console.error('Error loading visitor count:', err);
-      document.getElementById('visitor-count').innerText = 'Visitors: unavailable';
-    });
-</script>
-
-	
-	
+    <script>
+      // Fetch the visitor count for the homepage (path "/")
+      fetch('https://wecpro.goatcounter.com/counter/%2F.json')
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById('visitor-count').innerText =
+            'Visitors: ' + data.count;
+        })
+        .catch(err => {
+          console.error('Error loading visitor count:', err);
+          document.getElementById('visitor-count').innerText = 'Visitors: unavailable';
+        });
+    </script>
   </body>
 </html>
