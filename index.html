@@ -359,6 +359,7 @@
         async src="//gc.zgo.at/count.js"></script>
 
 <footer style="text-align:left; font-size:0.9em; margin-top:20px;">
+
   <p>
     © 2025 WEC-Pro Project
     <br>
@@ -371,7 +372,19 @@
 </footer>
 
 <script>
-	
+  // Fetch the total visitor count from GoatCounter API
+  fetch('https://wecpro.goatcounter.com/counter/wecpro.json')
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('visitor-count').innerText =
+        'Visitors: ' + data.count;
+    })
+    .catch(err => {
+      console.error('Error loading visitor count:', err);
+      document.getElementById('visitor-count').innerText = 'Visitors: unavailable';
+    });
+</script>
+
 	
 	
   </body>
