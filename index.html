@@ -354,7 +354,7 @@
     </script>
 	
 	
-	    <!-- Visitor counter (privacy-friendly, no cookies) -->
+    <!-- Visitor counter (privacy-friendly, no cookies) -->
     <script data-goatcounter="https://wecpro.goatcounter.com/count"
             src="//gc.zgo.at/count.js"></script>
 
@@ -371,8 +371,8 @@
     </footer>
 
     <script>
-      // Fetch the visitor count for the homepage (path "/")
-      fetch('https://wecpro.goatcounter.com/counter/%2F.json')
+      // Fetch the total site visitor count from GoatCounter API
+      fetch('https://wecpro.goatcounter.com/counter/TOTAL.json')
         .then(r => r.json())
         .then(data => {
           document.getElementById('visitor-count').innerText =
@@ -385,3 +385,4 @@
     </script>
   </body>
 </html>
+
