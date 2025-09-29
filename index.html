@@ -14,6 +14,45 @@
         },
       };
     </script>
+	
+<style>
+  .floating-top-right {
+    position: fixed;
+    top: 100px;          /* higher up so it clears header */
+    right: 400px;       /* still shifted left slightly */
+    z-index: 1000;
+    max-width: 180px;   /* slightly smaller */
+    height: auto;
+  }
+
+  /* Tablet screens */
+  @media (max-width: 1024px) {
+    .floating-top-right {
+      max-width: 140px;
+      right: 60px;
+      top: 15px;
+    }
+  }
+
+  /* Mobile screens */
+  @media (max-width: 600px) {
+    .floating-top-right {
+      max-width: 90px;
+      right: 20px;
+      top: 10px;
+    }
+  }
+
+  /* Tiny screens (optional hide) */
+  @media (max-width: 400px) {
+    .floating-top-right {
+      display: none;
+    }
+  }
+</style>
+
+
+
 
     <style>
       html, body {
@@ -169,7 +208,6 @@
                   <Icon name={mobileOpen ? "x" : "menu"} size={28} />
                 </button>
               </div>
-
               {/* Mobile Menu */}
               <nav id="mobileNav" className={`md:hidden bg-gray-50 border-t border-gray-100 ${mobileOpen ? "" : "hidden"}`}>
                 <ul className="px-2 py-2">
@@ -211,17 +249,19 @@
                   <div className="max-w-2xl">
                     <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
                       Welcome to <span className="text-primary-700">WEC-Pro</span>
+					  
                     </h1>                 
 						<p className="mt-5 text-4xl text-gray-700 max-w-10xl mx-auto text-left">
-							Progressing Wave Energy Conversion via Large-Scale Additive Manufacturing
+							Progressing Wave Energy Conversion via Large-Scale Additive Manufacturing 
 						</p>
                     <div className="mt-8 flex gap-3">
                     </div>
+					
                   </div>
                 </div>
               </section>
 
-             
+
 {/* Placeholder cards */}
 <section className="bg-white/50">
   <div className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8">
@@ -238,8 +278,9 @@
       </p>
     </div>
   </div>
-
               </section>
+			  
+
             </main>
 						  
 <footer className="mt-2 border-t bg-white/90 backdrop-blur">
@@ -383,6 +424,18 @@
           document.getElementById('visitor-count').innerText = 'Visitors: unavailable';
         });
     </script>
-  </body>
+
+<!-- <div style="position: absolute; top: 40px; right: 20px;">
+  <img src="WEC3DROB_0.png" alt="WEC3DROB Image" style="width: 150px;">
+</div> -->
+
+<img src="WEC3DROB_1.png" alt="Floating graphic" class="floating-top-right">
+
+
+</body>
 </html>
+
+
+
+
 
