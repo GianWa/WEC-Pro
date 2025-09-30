@@ -228,6 +228,7 @@
                         <Collapsible open={isOpen} id={`acc-${item.key}`}>
                           {item.links.map((link, i) => (
                            <a key={i} href={link === "Abstract" ? "abstract.html" :
+						link === "Resources" ? "resources.html" :
 						link === "Context" ? "context.html" :
 						link === "FAQ" ? "FAQ.html" :
 						link === "Contacts" ? "contacts.html" :"#"}  className="block px-4 py-2 rounded hover:bg-gray-100">
