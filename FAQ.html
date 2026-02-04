@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,14 +39,31 @@
     }
     h1 {
       font-size: 2em;
-       color: #0f172a; /* slate-900 */
-	   margin-bottom: 20px;
+      color: #0f172a; /* slate-900 */
+      margin-bottom: 30px;
       text-align: center;
+    }
+    h2 {
+      font-size: 1.3em;
+      color: #0f172a;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
     }
     p {
       font-size: 1.1em;
       line-height: 1.6;
       margin-bottom: 20px;
+    }
+    ul {
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -57,73 +73,64 @@
       <a href="index.html">Home</a>
       <a href="abstract.html">The Project</a>
       <a href="context.html">Context</a>
-	  <a href="resources.html">Resources</a>
+      <a href="resources.html">Resources</a>
       <a href="FAQ.html">F.A.Q.</a>
       <a href="contacts.html">About</a>
     </nav>
   </header>
+  
   <div class="container">
     <h1>Frequently Asked Questions</h1>
- <section id="wec-pro-faq" lang="en">
-  <h1>WEC-Pro — Frequently Asked Questions (FAQ)</h1>
+    
+    <section id="wec-pro-faq">
+      
+      <h2>1) What is WEC-Pro?</h2>
+      <p>
+        WEC-Pro is a research project dedicated to advancing the commercial viability of <strong>Wave Energy Converters (WECs)</strong>. The project addresses the current barriers in the sector by integrating numerical modeling with <strong>Large-Scale Additive Manufacturing (LSAM)</strong>. By leveraging the expertise of partners like Politecnico di Torino and Caracol, WEC-Pro aims to streamline the design, production, and testing phases of marine energy devices, bridging the gap between theoretical optimization and industrial application.
+      </p>
 
-  <h2>1) What is WEC-Pro?</h2>
-  <p>
-    WEC-Pro is a research project that advances <strong>wave energy converters (WECs)</strong>
-    using <strong>large-scale additive manufacturing (LSAM)</strong>. It integrates
-    numerical modeling, experimental testing, techno-economic assessment, and LSAM
-    to deliver reliable, cost-effective marine energy solutions.
-  </p>
+      <h2>2) Why is wave energy important?</h2>
+      <p>
+        Ocean waves represent a massive, untapped global resource estimated at approximately <strong>32 PWh/year</strong>. Unlike other renewable sources, waves offer high energy density and greater predictability. Harnessing this resource can significantly expand the European renewable energy portfolio, reduce land usage requirements, and strengthen energy security by complementing the intermittency of wind and solar power.
+      </p>
 
-  <h2>2) Why is wave energy important?</h2>
-  <p>
-    Ocean waves offer an underused global resource (~<strong>32 PWh/year</strong>).
-    They complement wind and solar in timing and predictability, helping reduce land use,
-    strengthen <strong>energy security</strong>, and support climate goals.
-  </p>
+      <h2>3) What are today’s main challenges in the sector?</h2>
+      <p>
+        The wave energy sector currently faces a "high-cost, low-readiness" cycle. Traditional manufacturing processes are complex and expensive, and design methods borrowed from naval engineering are often not tailored to the specific needs of energy absorption. These factors contribute to high development costs and low Technology Readiness Levels (TRLs), hindering the commercial scalability of devices.
+      </p>
 
-  <h2>3) What are today’s main challenges?</h2>
-  <ul>
-    <li>High costs for design, manufacturing, and multi-scale testing.</li>
-    <li>Methods borrowed from naval/offshore engineering not tailored to WEC needs.</li>
-    <li>Reliability and bankability hurdles at low Technology Readiness Levels (TRLs).</li>
-  </ul>
+      <h2>4) How does LSAM (Large-Scale Additive Manufacturing) help?</h2>
+      <p>
+        LSAM transforms the production landscape by enabling the rapid manufacturing of complex, hydrodynamically optimized geometries that are difficult to achieve with standard molds. This technology reduces material waste and allows for the use of sustainable materials. Crucially, when coupled with adapted optimization tools, LSAM has the potential to reduce the cost of devices by over <strong>10 times</strong> compared to traditional methods.
+      </p>
 
-  <h2>4) How does LSAM help?</h2>
-  <ul>
-    <li>Rapid, lower-cost prototyping of complex WEC geometries.</li>
-    <li>Reduced material waste and option to use recycled materials.</li>
-    <li>Scalable production without molds, enabling faster design iterations.</li>
-  </ul>
+      <h2>5) What are WEC-Pro’s specific goals?</h2>
+      <p>
+        The project's primary goal is to upgrade established design methods by integrating LSAM manufacturing constraints directly into the modeling tools. WEC-Pro focuses on three main work packages: multi-parameter performance design, structural optimization, and physical testing. The project aims to validate these methods by producing and testing a fully 3D-printed physical model of a point absorber WEC for offshore application.
+      </p>
 
-  <h2>5) What are WEC-Pro’s goals?</h2>
-  <ul>
-    <li>Create an integrated methodology combining modeling, testing, economics, and LSAM.</li>
-    <li>Optimize and validate two benchmark WECs (PivWEC and PeWEC) via scaled tank tests.</li>
-    <li>Raise TRL while cutting uncertainty, cycle time, and cost.</li>
-    <li>Provide tools transferrable to other marine renewables (tidal, hybrid wind-wave, wave-solar).</li>
-  </ul>
+      <h2>6) Who is involved in the project?</h2>
+      <p>
+        WEC-Pro is a collaborative effort leveraging distinct areas of expertise. It is hosted at <strong>Politecnico di Torino (POLITO)</strong>, which provides strong expertise in WEC optimization. <strong>Caracol</strong>, Europe’s principal LSAM production center, leads the manufacturing innovations. Additionally, the project involves testing at specialized national laboratory to validate the physical model in fully operational environment.
+      </p>
 
-  <h2>6) Who is involved?</h2>
-  <p>
-    The project is hosted at <strong>Politecnico di Torino (POLITO)</strong>
-    with <strong>Caracol AM</strong> (LSAM specialist SME) as a key partner.
-  </p>
+      <h2>7) What impact is expected?</h2>
+      <p>
+        The project aims to deliver open-source tools and models for WEC power absorption and structural optimization, alongside valuable data sets for benchmarking LSAM-produced devices. Societally, it will raise awareness of ocean energy through outreach. Economically, it establishes a pipeline for collaborative R&D and supports the EU's renewable energy production targets.
+      </p>
 
-  <h2>7) What impact is expected?</h2>
-  <ul>
-    <li><strong>Scientific:</strong> Open methods, datasets, and software; journal articles; conference papers.</li>
-    <li><strong>Societal:</strong> Outreach via fairs, media, and open events to build ocean-energy awareness.</li>
-    <li><strong>Economic:</strong> Pipeline for collaborative R&amp;D, potential start-up activity, and contribution to EU offshore targets.</li>
-  </ul>
+      <h2>8) How does WEC-Pro align with EU priorities?</h2>
+      <p>
+        WEC-Pro directly supports the European Green Deal and REPowerEU initiatives by unlocking a new blue economy sector. It advances key Sustainable Development Goals (SDGs), specifically <strong>SDG 7</strong> (Affordable and Clean Energy), <strong>SDG 9</strong> (Industry, Innovation and Infrastructure), and <strong>SDG 13</strong> (Climate Action), by fostering a sustainable and fast manufacturing route for renewable energy technology.
+      </p>
 
-  <h2>8) How does WEC-Pro align with EU priorities?</h2>
-  <p>
-    WEC-Pro supports the European Green Deal and REPowerEU, and advances SDGs
-    <strong>7</strong> (clean energy), <strong>9</strong> (industry &amp; innovation),
-    <strong>11</strong> (sustainable communities), and <strong>13</strong> (climate action).
-  </p>
-</section>
+    </section>
+
+    <figure style="text-align: center; margin: 40px 0;">
+       <img src="WEC-pro-team.jpg" alt="Chart showing global electricity generation mix 2023" style="max-width:100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+       <figcaption style="font-size: 0.9em; color: #64748b; margin-top: 10px; font-style: italic;">
+       </figcaption>
+    </figure>
 
   </div>
 </body>
