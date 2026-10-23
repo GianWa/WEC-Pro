@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>WEC-Pro: Wave Energy Conversion via Additive Manufacturing</title>
+    <title>WEC-Pro Project Site - Progressing Wave Energy Conversion via Large-Scale Additive Manufacturing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -55,135 +55,15 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="nav.js"></script>
 
     <script type="text/babel">
-      const { useEffect, useRef, useState } = React;
-
-      /* --- Icons --- */
-      const Icon = ({ name, size = 24, stroke = 2, className = "" }) => {
-        const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none",
-                         stroke: "currentColor", strokeWidth: stroke, strokeLinecap: "round",
-                         strokeLinejoin: "round", className };
-        switch (name) {
-          case "menu": return (<svg {...common}><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>);
-          case "x": return (<svg {...common}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>);
-          case "chevron-down": return (<svg {...common}><polyline points="6 9 12 15 18 9" /></svg>);
-          default: return null;
-        }
-      };
-
-      /* --- Collapsible Component --- */
-      const Collapsible = ({ open, children, id }) => {
-        const ref = useRef(null);
-        const [maxH, setMaxH] = useState(0);
-        useEffect(() => {
-          const el = ref.current; if (!el) return;
-          if (open) {
-            setMaxH(el.scrollHeight);
-            const r = new ResizeObserver(() => setMaxH(el.scrollHeight));
-            r.observe(el); return () => r.disconnect();
-          } else setMaxH(0);
-        }, [open, children]);
-        return (
-          <div id={id} className={`collapsible ${open ? "open" : ""}`} style={{ maxHeight: open ? maxH : 0 }}>
-            <div ref={ref}>{children}</div>
-          </div>
-        );
-      };
-
       /* --- Main App --- */
       function App() {
-        const [mobileOpen, setMobileOpen] = useState(false);
-        const [openAcc, setOpenAcc] = useState(null);
-
-        const navItems = [
-          { title: "The Project", key: "Abstract", links: ["Abstract"] },
-          { title: "Context", key: "Context", links: ["Context"] },
-          { title: "Resources", key: "Resources", links: ["Resources"] },
-          { title: "F.A.Q.", key: "FAQ", links: ["FAQ"] },
-          { title: "About", key: "Contacts", links: ["Contacts"] },
-        ];
-
-        useEffect(() => {
-          const onResize = () => { if (window.innerWidth >= 768 && mobileOpen) setMobileOpen(false); };
-          window.addEventListener("resize", onResize);
-          return () => window.removeEventListener("resize", onResize);
-        }, [mobileOpen]);
-
         return (
           <div className="min-h-screen flex flex-col">
-            {/* Header */}
-            <header className="w-full sticky top-0 z-50 header-blur shadow-md">
-              <div className="max-w-7xl mx-auto flex justify-center items-center px-4 py-3">
-                
-                {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center gap-6">
-                  {navItems.map((item) => (
-                    <div key={item.key} className="relative group">
-                      <button className="flex items-center gap-1 hover:text-primary-700">
-                        {item.title} <Icon name="chevron-down" size={16} />
-                      </button>
-                      <div className="absolute left-0 mt-2 hidden group-hover:block group-focus-within:block bg-white shadow-lg rounded-xl p-3 w-48">
-                        {item.links.map((link, i) => (
-                          <a key={i} href={link === "Abstract" ? "abstract.html" :
-                            link === "Context" ? "context.html" :
-                            link === "Resources" ? "resources.html" :
-                            link === "FAQ" ? "FAQ.html" :
-                            link === "Contacts" ? "contacts.html" : "#"} 
-                            className="block px-4 py-2 rounded hover:bg-gray-100">
-                            {link}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </nav>
-
-                {/* Mobile Hamburger */}
-                <button
-                  className="md:hidden p-2 rounded hover:bg-gray-100"
-                  aria-expanded={mobileOpen}
-                  aria-controls="mobileNav"
-                  onClick={() => setMobileOpen((v) => !v)}
-                >
-                  <Icon name={mobileOpen ? "x" : "menu"} size={28} />
-                </button>
-              </div>
-
-              {/* Mobile Menu */}
-              <nav id="mobileNav" className={`md:hidden bg-gray-50 border-t border-gray-100 ${mobileOpen ? "" : "hidden"}`}>
-                <ul className="px-2 py-2">
-                  {navItems.map((item) => {
-                    const isOpen = openAcc === item.key;
-                    return (
-                      <li key={item.key} className="border-b border-gray-200">
-                        <button
-                          className="w-full flex items-center justify-between px-3 py-3 font-medium"
-                          onClick={() => setOpenAcc(isOpen ? null : item.key)}
-                        >
-                          <span>{item.title}</span>
-                          <span className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>
-                            <Icon name="chevron-down" size={20} />
-                          </span>
-                        </button>
-                        <Collapsible open={isOpen} id={`acc-${item.key}`}>
-                          {item.links.map((link, i) => (
-                            <a key={i} href={link === "Abstract" ? "abstract.html" :
-                            link === "Resources" ? "resources.html" :
-                            link === "Context" ? "context.html" :
-                            link === "FAQ" ? "FAQ.html" :
-                            link === "Contacts" ? "contacts.html" : "#"} 
-                            className="block px-4 py-2 rounded hover:bg-gray-100">
-                            {link}
-                            </a>
-                          ))}
-                        </Collapsible>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
-            </header>
+            {/* Shared Header from nav.js */}
+            <SiteHeader />
 
             {/* Main Content */}
             <main className="flex-1">
@@ -198,7 +78,7 @@
                     <div className="max-w-2xl text-center md:text-left">
                       <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
                         Welcome to <span className="text-primary-700">WEC-Pro</span>
-                      </h1>                 
+                      </h1>                   
                       <p className="mt-6 text-xl md:text-2xl text-gray-700 leading-relaxed">
                         Progressing Wave Energy Conversion via Large-Scale Additive Manufacturing 
                       </p>
@@ -230,9 +110,9 @@
                   <div className="p-6 bg-white rounded-xl shadow-sm">
                     <h3 className="text-xl font-semibold">Objectives</h3>
                     <p className="mt-2 text-gray-600">
-					<li><strong>Integrate LSAM for Cost-Efficiency:</strong> Streamline the design and production of wave energy converters using Large-Scale Additive Manufacturing (LSAM) to potentially reduce costs by up to 10 times.</li>
-					<li><strong>Develop Integrated Modelling Tools:</strong> Create open-source tools and upgraded numerical models that incorporate LSAM parameters to optimize both power absorption and structural design.</li>
-					<li><strong>Experimental Validation:</strong> Validate the improved designs by testing fully LSAM-produced models within a full operational environment.</li>
+                    <li><strong>Integrate LSAM for Cost-Efficiency:</strong> Streamline the design and production of wave energy converters using Large-Scale Additive Manufacturing (LSAM) to potentially reduce costs by up to 10 times.</li>
+                    <li><strong>Develop Integrated Modelling Tools:</strong> Create open-source tools and upgraded numerical models that incorporate LSAM parameters to optimize both power absorption and structural design.</li>
+                    <li><strong>Experimental Validation:</strong> Validate the improved designs by testing fully LSAM-produced models within a full operational environment.</li>
                     </p>
                   </div>
                 </div>
@@ -342,6 +222,4 @@
 
     <script data-goatcounter="https://wecpro.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
   </body>
-
 </html>
-

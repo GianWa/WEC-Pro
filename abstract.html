@@ -1,10 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Abstract – WEC-Pro</title>
+
+  <!-- Tailwind CSS required for nav.js styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: { colors: { primary: { 600: "#003399", 700: "#003399" } } },
+      },
+    };
+  </script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,24 +23,9 @@
       margin: 0;
       padding: 0;
     }
-    header {
-      background-color: #ffffff;
-      padding: 15px 20px;
-      color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    nav a {
-      color: black;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: normal;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    .container {
+    /* Header/Nav styles removed to let nav.js and Tailwind handle the menu */
+    
+    .content-container {
       max-width: 900px;
       margin: 40px auto;
       padding: 20px;
@@ -38,45 +33,72 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       border-radius: 8px;
     }
-    h1 {
+    h1.page-title {
       font-size: 2em;
-       color: #0f172a; /* slate-900 */
-	   margin-bottom: 20px;
+      color: #0f172a; /* slate-900 */
+      margin-bottom: 20px;
       text-align: center;
     }
-    p {
+    p.page-text {
       font-size: 1.1em;
       line-height: 1.6;
       margin-bottom: 20px;
     }
+    
+    /* Slight blur under sticky header from your index.html */
+    .header-blur { background: rgba(255,255,255,0.9); backdrop-filter: saturate(120%) blur(6px); }
   </style>
 </head>
-<body>
-  <header>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="abstract.html">The Project</a>
-      <a href="context.html">Context</a>
-	  <a href="resources.html">Resources</a>
-      <a href="FAQ.html">F.A.Q.</a>
-      <a href="contacts.html">About</a>
-    </nav>
-  </header>
-  <div class="container">
-    <h1>Project Abstract</h1>
-    <p>Wave energy conversion by harnessing untapped ocean resources has the potential to significantly expand the European renewable energy production and portfolio. However, high development costs, complex manufacturing processes, and low technology readiness levels have hindered the commercial scalability of wave energy converters (WECs). The WEC-Pro project seeks to address these challenges by leveraging cutting-edge Large-Scale Additive Manufacturing (LSAM) technologies to streamline the design, production, and testing of WECs. LSAM coupled with adapted optimization tools has the potential of reducing device’s costs by over 10 times.</p>
-    <p>WEC-Pro will take advantage of the strong expertise of Politecnico di Torino in WECs optimization and Europe’s principal LSAM production centre, Caracol, to develop and adapt WEC modelling tools for LSAM application.</p>
-    <p>For the use of the sustainable and fast LSAM, enabling the development of highly efficient and cost-effective devices, it is required to integrate new parameters in form of constraints to modelling tools. WEC-Pro’s primary goal is to integrate required LSAM parameters and upgrade established methods, design and optimization processes for WECs R&D scope.</p>
-    <p>Key challenges of multi-parameter performance design, structural optimization, physical testing and LSAM production of WECs are addressed in three dedicated work packages, respectively. For demonstration, WEC-Pro covers two high-potential case study technologies, PivWEC (near-shore) and PeWEC (offshore), by testing for the first time fully-LSAM produced WECs physical models at a wave testing tank.</p>
-    <p>The planned outcomes include the development of open-source tools and models for WEC’s power absorption, structural optimization and data sets for LSAM-WECs benchmarking.</p>
-  <figure style="text-align: center; margin: 30px 0;">
-       <img src="euPA2.png" alt="Chart showing global electricity generation mix 2023" style="max-width:100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-       <figcaption style="font-size: 0.9em; color: #64748b; margin-top: 10px; font-style: italic;">
-       </figcaption>
-    </figure>
+<body class="min-h-screen flex flex-col">
+  
+  <div id="root"></div>
 
+  <!-- React & Babel requirements for the nav component -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- External Nav Component -->
+  <script src="nav.js"></script>
 
+  <script type="text/babel">
+    function App() {
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* New Nav Component inserted here */}
+          <SiteHeader />
 
-  </div>
+          {/* Existing Abstract Content */}
+          <main className="flex-1">
+            <div className="content-container">
+              <h1 className="page-title">Project Abstract</h1>
+              
+              <p className="page-text">Wave energy conversion by harnessing untapped ocean resources has the potential to significantly expand the European renewable energy production and portfolio. However, high development costs, complex manufacturing processes, and low technology readiness levels have hindered the commercial scalability of wave energy converters (WECs). The WEC-Pro project seeks to address these challenges by leveraging cutting-edge Large-Scale Additive Manufacturing (LSAM) technologies to streamline the design, production, and testing of WECs. LSAM coupled with adapted optimization tools has the potential of reducing device’s costs by over 10 times.</p>
+              
+              <p className="page-text">WEC-Pro will take advantage of the strong expertise of Politecnico di Torino in WECs optimization and Europe’s principal LSAM production centre, Caracol, to develop and adapt WEC modelling tools for LSAM application.</p>
+              
+              <p className="page-text">For the use of the sustainable and fast LSAM, enabling the development of highly efficient and cost-effective devices, it is required to integrate new parameters in form of constraints to modelling tools. WEC-Pro’s primary goal is to integrate required LSAM parameters and upgrade established methods, design and optimization processes for WECs R&D scope.</p>
+              
+              <p className="page-text">Key challenges of multi-parameter performance design, structural optimization, physical testing and LSAM production of WECs are addressed in three dedicated work packages, respectively. For demonstration, WEC-Pro covers two high-potential case study technologies, PivWEC (near-shore) and PeWEC (offshore), by testing for the first time fully-LSAM produced WECs physical models at a wave testing tank.</p>
+              
+              <p className="page-text">The planned outcomes include the development of open-source tools and models for WEC’s power absorption, structural optimization and data sets for LSAM-WECs benchmarking.</p>
+              
+              <figure style={{ textAlign: 'center', margin: '30px 0' }}>
+                <img 
+                  src="euPA2.png" 
+                  alt="Chart showing global electricity generation mix 2023" 
+                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+                />
+                <figcaption style={{ fontSize: '0.9em', color: '#64748b', marginTop: '10px', fontStyle: 'italic' }}></figcaption>
+              </figure>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
 </body>
 </html>

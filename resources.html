@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources</title>
+
+  <!-- Tailwind CSS required for nav.js styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: { colors: { primary: { 600: "#003399", 700: "#003399" } } },
+      },
+    };
+  </script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,23 +22,6 @@
       color: #333;
       margin: 0;
       padding: 0;
-    }
-    header {
-      background-color: #ffffff;
-      padding: 15px 20px;
-      color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    nav a {
-      color: black;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: normal;
-    }
-    nav a:hover {
-      text-decoration: underline;
     }
     .container {
       max-width: 900px;
@@ -48,84 +42,127 @@
       line-height: 1.6;
       margin-bottom: 20px;
     }
+    /* Preserves standard list bullets and link formatting under Tailwind */
+    .container ul {
+      list-style-type: disc;
+      padding-left: 2.25rem;
+      margin-bottom: 1rem;
+    }
+    .container li {
+      margin-bottom: 0.5rem;
+    }
+    .container a {
+      color: #003399;
+      text-decoration: underline;
+    }
+    .container a:hover {
+      color: #001f5c;
+    }
+    /* Sticky header blur matching index.html */
+    .header-blur { 
+      background: rgba(255, 255, 255, 0.9); 
+      backdrop-filter: saturate(120%) blur(6px); 
+    }
   </style>
 </head>
-<body>
-  <header>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="abstract.html">The Project</a>
-      <a href="context.html">Context</a>
-      <a href="resources.html">Resources</a>
-      <a href="FAQ.html">F.A.Q.</a>
-      <a href="contacts.html">About</a>
-    </nav>
-  </header>
-  
-  <div class="container">
-    <h1>Resources - section under development, it will be updated in following months</h1>
-    
-    <p><strong>Main Project Deliverables</strong></p>
-    <p><strong>--Project reports--</strong></p>
-    <ul>
-      <li>
-        <a href="WEC-Pro_WP1_Report.pdf" target="_blank" rel="noopener noreferrer" title="WP1 Project Report v03.01 - Wave energy converter design for power absorption">
-          WP1 Project Report v03.01 - Wave energy converter design for power absorption
-        </a> 
-        <em>(This report might be updated throughout the project time)</em>
-      </li>
-    </ul>
-	<ul>
-      <li>
-        <a href="WEC_Pro_WP2_report_02.pdf" target="_blank" rel="noopener noreferrer" title="WP2 Project Report v01.02 - Structural toolbox for LSAM incorporation">
-          WP2 Project Report v01.02 - Structural toolbox for LSAM incorporation
-        </a> 
-			<em>(NEW!)</em>
-        <em>(This report might be updated throughout the project time)</em>
-      </li>
-    </ul>
-    <p><strong>--Other Project Deliverables--</strong></p>
-    <ul>
-      <li>
-        <a href="WEC_Pro_Agenda.pdf" target="_blank" rel="noopener noreferrer" title="Large Format Additive Manufacturing
-for Marine Renewable Energy- Agenda 2026">
-          WP2 Project Deliverable D2.1 Ver. 00.05
-        </a> 
-        <em>(This document might be updated throughout the project time)</em>
-		<em>(NEW!)</em>
-      </li>
-    </ul>
-    <p><strong>--Publications--</strong></p>
-	    <ul>
-      <li>
-        <a href="https://www.sciencedirect.com/science/article/pii/S0141118726002051" target="_blank" rel="noopener noreferrer" title="Toward scalable and sustainable manufacturing solutions—A review of Large-Format Additive Manufacturing for marine applications with recommended methods and materials">
-          Applied Ocean Research Journal - Elsevier — <em>Toward scalable and sustainable manufacturing solutions—A review of Large-Format Additive Manufacturing for marine applications with recommended methods and materials</em>
-        </a>
-		<em>(NEW!)</em>
-      </li>
-    </ul>
-	
-    <ul>
-      <li>
-        <a href="https://www.researchgate.net/publication/395514057_Multi-Objective_Development_of_a_Point_Absorber_Wave_Energy_Converter_Using_Dynamic_Modelling" target="_blank" rel="noopener noreferrer" title="EWTEC conference paper: Multi-Objective Development of a Point Absorber Wave Energy Converter Using Dynamic Modelling">
-          EWTEC conference paper — <em>Multi-Objective Development of a Point Absorber Wave Energy Converter Using Dynamic Modelling</em>
-        </a>
-      </li>
-    </ul>
-	
-	<ul>
-      <li>
-        <a href="https://www.researchgate.net/publication/410999406_OPTIMIZATION_OF_THE_PENDULUM_WAVE_ENERGY_CONVERTER_WITH_SPLINE-BASED_HULL_SHAPE" target="_blank" rel="noopener noreferrer" title="OMAE 2026 conference paper: Optimization Of The Pendulum Wave Energy Converter With Spline-based Hull Shape">
-          OMAE conference paper — <em>Optimization Of The Pendulum Wave Energy Converter With Spline-based Hull Shape</em>
-        </a>
-		<em>(NEW!)</em>
-      </li>
-    </ul>
-    
-    <p><strong>--Other Downloads--</strong></p>
-    <li> will be uploaded soon </li>
-    <p><strong>--Links to Additional Materials--</strong></p>
-	<li> will be uploaded soon </li>
-  </div>
+<body class="min-h-screen flex flex-col">
+  <div id="root"></div>
+
+  <!-- React, ReactDOM & Babel -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Navigation Component -->
+  <script src="nav.js"></script>
+
+  <script type="text/babel">
+    function App() {
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Shared Navigation Header */}
+          <SiteHeader />
+
+          {/* Main Resources Content */}
+          <main className="flex-1">
+            <div className="container">
+              <h1>Resources - section under development, it will be updated in following months</h1>
+              
+              <p><strong>Main Project Deliverables</strong></p>
+              <p><strong>--Project reports--</strong></p>
+              <ul>
+                <li>
+                  <a href="WEC-Pro_WP1_Report.pdf" target="_blank" rel="noopener noreferrer" title="WP1 Project Report v03.01 - Wave energy converter design for power absorption">
+                    WP1 Project Report v03.01 - Wave energy converter design for power absorption
+                  </a> 
+                  <em> (This report might be updated throughout the project time)</em>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <a href="WEC_Pro_WP2_report_02.pdf" target="_blank" rel="noopener noreferrer" title="WP2 Project Report v01.02 - Structural toolbox for LSAM incorporation">
+                    WP2 Project Report v01.02 - Structural toolbox for LSAM incorporation
+                  </a> 
+                  <em> (NEW!) </em>
+                  <em>(This report might be updated throughout the project time)</em>
+                </li>
+              </ul>
+
+              <p><strong>--Other Project Deliverables--</strong></p>
+              <ul>
+                <li>
+                  <a href="WEC_Pro_Agenda.pdf" target="_blank" rel="noopener noreferrer" title="Large Format Additive Manufacturing for Marine Renewable Energy- Agenda 2026">
+                    WP2 Project Deliverable D2.1 Ver. 00.05
+                  </a> 
+                  <em> (This document might be updated throughout the project time) </em>
+                  <em>(NEW!)</em>
+                </li>
+              </ul>
+
+              <p><strong>--Publications--</strong></p>
+              <ul>
+                <li>
+                  <a href="https://www.sciencedirect.com/science/article/pii/S0141118726002051" target="_blank" rel="noopener noreferrer" title="Toward scalable and sustainable manufacturing solutions—A review of Large-Format Additive Manufacturing for marine applications with recommended methods and materials">
+                    Applied Ocean Research Journal - Elsevier — <em>Toward scalable and sustainable manufacturing solutions—A review of Large-Format Additive Manufacturing for marine applications with recommended methods and materials</em>
+                  </a>
+                  <em> (NEW!)</em>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <a href="https://www.researchgate.net/publication/395514057_Multi-Objective_Development_of_a_Point_Absorber_Wave_Energy_Converter_Using_Dynamic_Modelling" target="_blank" rel="noopener noreferrer" title="EWTEC conference paper: Multi-Objective Development of a Point Absorber Wave Energy Converter Using Dynamic Modelling">
+                    EWTEC conference paper — <em>Multi-Objective Development of a Point Absorber Wave Energy Converter Using Dynamic Modelling</em>
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <a href="https://www.researchgate.net/publication/410999406_OPTIMIZATION_OF_THE_PENDULUM_WAVE_ENERGY_CONVERTER_WITH_SPLINE-BASED_HULL_SHAPE" target="_blank" rel="noopener noreferrer" title="OMAE 2026 conference paper: Optimization Of The Pendulum Wave Energy Converter With Spline-based Hull Shape">
+                    OMAE conference paper — <em>Optimization Of The Pendulum Wave Energy Converter With Spline-based Hull Shape</em>
+                  </a>
+                  <em> (NEW!)</em>
+                </li>
+              </ul>
+              
+              <p><strong>--Other Downloads--</strong></p>
+              <ul>
+                <li>will be uploaded soon</li>
+              </ul>
+
+              <p><strong>--Links to Additional Materials--</strong></p>
+              <ul>
+                <li>will be uploaded soon</li>
+              </ul>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
 </body>
 </html>
+
+```

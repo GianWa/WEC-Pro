@@ -1,9 +1,20 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='utf-8'>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Beyond the Grid – WEC‑Pro</title>
+
+  <!-- Tailwind CSS required for nav.js styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: { colors: { primary: { 600: "#003399", 700: "#003399" } } },
+      },
+    };
+  </script>
+
   <style>
     /* Base Reset & Typography */
     body {
@@ -15,25 +26,11 @@
       line-height: 1.6;
     }
 
-    /* --- UPDATED HEADER STYLE (Matching abstract.html) --- */
-    header {
-      background-color: #ffffff;
-      padding: 15px 20px;
-      color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    /* Slight blur under sticky header */
+    .header-blur { 
+      background: rgba(255,255,255,0.9); 
+      backdrop-filter: saturate(120%) blur(6px); 
     }
-    nav a {
-      color: black;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: normal;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    /* ---------------------------------------------------- */
 
     /* Main Container */
     .container {
@@ -45,55 +42,71 @@
       border-radius: 12px;
     }
 
-    /* Headings */
-    h1 {
+    /* Headings — Scoped to .container to override Tailwind Preflight reset */
+    .container h1 {
       font-size: 2.2em;
+      font-weight: 700;
       color: #0f172a;
       margin-bottom: 10px;
       text-align: center;
       letter-spacing: -0.5px;
+      line-height: 1.25;
     }
-    .byline {
+    .container .byline {
       text-align: center;
       color: #64748b;
       font-style: italic;
       margin-bottom: 40px;
       font-size: 0.95em;
     }
-    h2 {
+    .container h2 {
       color: #1e293b;
       font-size: 1.5em;
+      font-weight: 700;
       margin-top: 40px;
       margin-bottom: 20px;
       border-bottom: 2px solid #e2e8f0;
       padding-bottom: 10px;
+      line-height: 1.35;
     }
-    h3 {
+    .container h3 {
       color: #334155;
       font-size: 1.25em;
+      font-weight: 600;
       margin-top: 30px;
+      margin-bottom: 10px;
+      line-height: 1.4;
     }
 
     /* Content Styling */
-    p {
+    .container p {
       font-size: 1.05em;
       margin-bottom: 20px;
       color: #374151;
     }
-    ul, ol {
+    .container ol {
+      list-style-type: decimal;
       margin-bottom: 20px;
       padding-left: 25px;
     }
-    li {
+    .container ul {
+      list-style-type: disc;
+      margin-bottom: 20px;
+      padding-left: 25px;
+    }
+    .container ol li,
+    .container ul li {
+      display: list-item;
       margin-bottom: 10px;
       color: #374151;
     }
-    strong {
+    .container strong {
       color: #0f172a;
+      font-weight: 700;
     }
 
     /* Special Sections */
-    .intro-text {
+    .container .intro-text {
       font-size: 1.15em;
       color: #1e293b;
       border-left: 4px solid #2563eb;
@@ -102,48 +115,49 @@
     }
 
     /* Data Snapshot Box */
-    .data-box {
+    .container .data-box {
       background-color: #f0f9ff;
       border: 1px solid #bae6fd;
       border-radius: 8px;
       padding: 25px;
       margin-top: 40px;
     }
-    .data-box h3 {
+    .container .data-box h3 {
       margin-top: 0;
       color: #0369a1;
       font-size: 1.2em;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .data-box ul {
+    .container .data-box ul {
       list-style-type: none;
       padding: 0;
       margin: 0;
     }
-    .data-box li {
+    .container .data-box li {
       padding: 10px 0;
       border-bottom: 1px solid #e0f2fe;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
     }
-    .data-box li:last-child {
+    .container .data-box li:last-child {
       border-bottom: none;
     }
-    .data-label {
+    .container .data-label {
       font-weight: bold;
       color: #0c4a6e;
     }
 
     /* Footer */
-    hr {
+    .container hr {
       border: 0;
       height: 1px;
       background: #e2e8f0;
       margin: 50px 0 30px 0;
     }
-    .footer-text {
+    .container .footer-text {
       font-size: 0.85em;
       color: #94a3b8;
       text-align: center;
@@ -155,114 +169,142 @@
         margin: 20px 10px;
         padding: 20px;
       }
-      h1 { font-size: 1.8em; }
-      nav a { margin: 5px 10px; }
-      .data-box li { flex-direction: column; }
+      .container h1 { font-size: 1.8em; }
+      .container .data-box li { flex-direction: column; }
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
-  <header>
-      <nav>
-        <a href='index.html'>Home</a>
-        <a href='abstract.html'>The Project</a>
-        <a href="context.html">Context</a>
-        <a href="resources.html">Resources</a>
-        <a href='FAQ.html'>F.A.Q.</a>
-        <a href='contacts.html'>About</a>
-      </nav>
-  </header>
+  <div id="root"></div>
 
-  <div class="container">
-    <h1>Toward Blue, Local, and Resilient Europe's Future</h1>
-   <div class="byline"></div>
+  <!-- React & Babel requirements for the nav component -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <div class="intro-text">
-      For decades, the global conversation on energy was dominated by a single metric: capacity. The goal was simply to produce enough power to feed an engine of economic growth that consumed resources without looking back. Today, that narrative has to be shifted.
-    </div>
+  <!-- External Nav Component -->
+  <script src="nav.js"></script>
 
-    <p>We are no longer just asking <em>how much</em> energy we can produce, but <em>how</em> we produce it, <em>who</em> owns it, and whether our infrastructure can survive the volatile century ahead.</p>
-    
-    <p>The transition to renewable energy is no longer an optional "green" add-on; it is a prerequisite for survival and the cornerstone of Europe’s new economic and energy security.</p>
+  <script type="text/babel">
+    function App() {
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Shared Header from nav.js */}
+          <SiteHeader />
 
-    <h2>The Double Bind: Climate Urgency and Energy Security</h2>
-    <p>The context for this shift is stark. The IPCC’s AR6 Synthesis Report confirms that human-driven warming is already triggering widespread impacts. To keep the 1.5–2°C limit within reach, we need rapid, deep emission cuts. While the IEA’s World Energy Outlook 2024 offers a glimmer of hope—renewables generated 30% of global electricity in 2023, while fossil fuels dropped to a 50-year low of 60%—the reality is that fossil fuels still satisfy about 80% of total energy demand.</p>
+          {/* Main Content */}
+          <main className="flex-1">
+            <div className="container">
+              <h1>Toward Blue, Local, and Resilient Europe's Future</h1>
+              <div className="byline"></div>
 
-    <figure style="text-align: center; margin: 30px 0;">
-       <img src="waveEEu2.png" alt="Chart showing global electricity generation mix 2023" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-       <figcaption style="font-size: 0.9em; color: #64748b; margin-top: 10px; font-style: italic;">
-       </figcaption>
-    </figure>
+              <div className="intro-text">
+                For decades, the global conversation on energy was dominated by a single metric: capacity. The goal was simply to produce enough power to feed an engine of economic growth that consumed resources without looking back. Today, that narrative has to be shifted.
+              </div>
 
-    <p>However, for Europe, the equation is not just environmental; it is geopolitical. The energy crisis has exposed the fragility of relying on external suppliers. Europe’s energy security now depends on aggressive domestic production. The target is clear: under the REPowerEU plan and the revised Renewable Energy Directive (RED III), the EU is aiming for a <strong>42.5% share of renewables by 2030</strong>. This is not merely an environmental target; it is a strategic mechanism to drastically reduce energy imports, insulating the continent from external price shocks and put at risk supplies.</p>
+              <p>We are no longer just asking <em>how much</em> energy we can produce, but <em>how</em> we produce it, <em>who</em> owns it, and whether our infrastructure can survive the volatile century ahead.</p>
+              
+              <p>The transition to renewable energy is no longer an optional "green" add-on; it is a prerequisite for survival and the cornerstone of Europe’s new economic and energy security.</p>
 
-    <h2>The Social Shift: From "Consumers" to "Communities"</h2>
-    <p>As we pivot away from fossil fuels, we are also witnessing a shift in economic philosophy. We are moving from "growth at all costs" to a model prioritizing well-being and resilience. This is evident in the financial sector, where the World Bank Group aligned all new operations with the Paris Agreement as of July 2023. The signal to the market is unambiguous: public finance must avoid "carbon lock-in."</p>
+              <h2>The Double Bind: Climate Urgency and Energy Security</h2>
+              <p>The context for this shift is stark. The IPCC’s AR6 Synthesis Report confirms that human-driven warming is already triggering widespread impacts. To keep the 1.5–2°C limit within reach, we need rapid, deep emission cuts. While the IEA’s World Energy Outlook 2024 offers a glimmer of hope—renewables generated 30% of global electricity in 2023, while fossil fuels dropped to a 50-year low of 60%—the reality is that fossil fuels still satisfy about 80% of total energy demand.</p>
 
-    <p>But the most profound change is happening on the ground. The old model of energy was centralized: a massive plant far away sent electrons down a one-way wire to passive consumers. The next iteration must feature a distributed and more egalitarian structure.</p>
+              <figure style={{ textAlign: 'center', margin: '30px 0' }}>
+                <img 
+                  src="waveEEu2.png" 
+                  alt="Chart showing global electricity generation mix 2023" 
+                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+                />
+                <figcaption style={{ fontSize: '0.9em', color: '#64748b', marginTop: '10px', fontStyle: 'italic' }}>
+                </figcaption>
+              </figure>
 
-    <figure style="text-align: center; margin: 30px 0;">
-       <img src="reCom_0.png" alt="Chart showing global electricity generation mix 2023" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-       <figcaption style="font-size: 0.9em; color: #64748b; margin-top: 10px; font-style: italic;">
-       </figcaption>
-    </figure>
+              <p>However, for Europe, the equation is not just environmental; it is geopolitical. The energy crisis has exposed the fragility of relying on external suppliers. Europe’s energy security now depends on aggressive domestic production. The target is clear: under the REPowerEU plan and the revised Renewable Energy Directive (RED III), the EU is aiming for a <strong>42.5% share of renewables by 2030</strong>. This is not merely an environmental target; it is a strategic mechanism to drastically reduce energy imports, insulating the continent from external price shocks and put at risk supplies.</p>
 
+              <h2>The Social Shift: From "Consumers" to "Communities"</h2>
+              <p>As we pivot away from fossil fuels, we are also witnessing a shift in economic philosophy. We are moving from "growth at all costs" to a model prioritizing well-being and resilience. This is evident in the financial sector, where the World Bank Group aligned all new operations with the Paris Agreement as of July 2023. The signal to the market is unambiguous: public finance must avoid "carbon lock-in."</p>
 
-    <p>Recent EU legislation, specifically the Clean Energy Package and RED III, has formally recognized Renewable Energy Communities (RECs) and Citizen Energy Communities (CECs). This is a game-changer for social acceptance. When citizens are co-owners of the infrastructure, "Not In My Backyard" (NIMBY) often transforms into "Please In My Backyard" (PIMBY). Community ownership keeps economic value local, stabilizes the grid through demand response, and ensures that the urban boom—with 68% of the world’s 9.7 billion people projected to live in cities by 2050—does not crush our infrastructure.</p>
+              <p>But the most profound change is happening on the ground. The old model of energy was centralized: a massive plant far away sent electrons down a one-way wire to passive consumers. The next iteration must feature a distributed and more egalitarian structure.</p>
 
-    <h2>The Strategic Gap: Why Wind and Solar Aren't Enough</h2>
-    <p>If decentralization is the "how," we still need to address the "what." Solar and wind have done the heavy lifting so far, but they face a critical limitation: intermittency. The sun sets, and the wind calms. To build a truly secure 24/7 grid without relying on gas peaker plants, we need a resource that fills the gaps.</p>
-    
-    <p>This is where <strong>Marine Renewable Energy (MRE)</strong> enters the narrative as the critical stabilizer.</p>
-    
-    <p>Europe’s Offshore Renewable Energy Strategy has identified the ocean as the next great frontier, targeting <strong>1 GW of ocean energy by 2030 and 40 GW by 2050</strong>. These aren't just arbitrary numbers; they represent a necessary diversification of our energy portfolio.</p>
+              <figure style={{ textAlign: 'center', margin: '30px 0' }}>
+                <img 
+                  src="reCom_0.png" 
+                  alt="Chart showing global electricity generation mix 2023" 
+                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+                />
+                <figcaption style={{ fontSize: '0.9em', color: '#64748b', marginTop: '10px', fontStyle: 'italic' }}>
+                </figcaption>
+              </figure>
 
-    <h2>The Economic Case for Wave Energy</h2>
-    <p>Why wave energy? The answer lies in complementarity.</p>
-    <ol>
-      <li><strong>Temporal Synergy:</strong> Wave resources often lag wind conditions. When the wind dies down, the waves (which are generated by winds far out at sea) often continue to roll in. This smooths out the peaks and troughs of power generation.</li>
-      <li><strong>Seasonal Matching:</strong> Wave energy is most powerful in the winter months. This perfectly aligns with Europe’s highest electricity demand for heating and lighting, providing security when the grid is most stressed.</li>
-      <li><strong>Cost Reduction through Hybridization:</strong> Considering that the economic reality that ocean space is expensive. By co-locating wave energy converters with floating wind farms, we can share the most capital-intensive assets: the export cables, the substations, and the maintenance vessels. This drastically lowers the Levelized Cost of Energy (LCOE).</li>
-    </ol>
-    
-    <figure style="text-align: center; margin: 30px 0;">
-       <img src="seaEc.png" alt="Chart showing global electricity generation mix 2023" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-       <figcaption style="font-size: 0.9em; color: #64748b; margin-top: 10px; font-style: italic;">
-       </figcaption>
-    </figure>
+              <p>Recent EU legislation, specifically the Clean Energy Package and RED III, has formally recognized Renewable Energy Communities (RECs) and Citizen Energy Communities (CECs). This is a game-changer for social acceptance. When citizens are co-owners of the infrastructure, "Not In My Backyard" (NIMBY) often transforms into "Please In My Backyard" (PIMBY). Community ownership keeps economic value local, stabilizes the grid through demand response, and ensures that the urban boom—with 68% of the world’s 9.7 billion people projected to live in cities by 2050—does not crush our infrastructure.</p>
 
-    <p>The market is responding. According to Ocean Energy Europe’s 2024 <em>Stats & Trends</em>, there is currently a 165 MW pipeline of pre-commercial projects across 15 farms. Private investment is rising as the technology graduates from "experimental" to "bankable".</p>
+              <h2>The Strategic Gap: Why Wind and Solar Aren't Enough</h2>
+              <p>If decentralization is the "how," we still need to address the "what." Solar and wind have done the heavy lifting so far, but they face a critical limitation: intermittency. The sun sets, and the wind calms. To build a truly secure 24/7 grid without relying on gas peaker plants, we need a resource that fills the gaps.</p>
+              
+              <p>This is where <strong>Marine Renewable Energy (MRE)</strong> enters the narrative as the critical stabilizer.</p>
+              
+              <p>Europe’s Offshore Renewable Energy Strategy has identified the ocean as the next great frontier, targeting <strong>1 GW of ocean energy by 2030 and 40 GW by 2050</strong>. These aren't just arbitrary numbers; they represent a necessary diversification of our energy portfolio.</p>
 
-    <h2>The WEC-Pro Vision: A Resilient, Blue Future</h2>
-    <p>At WEC-Pro, we view wave energy not as a competitor to wind or solar, but as the partner that makes the whole system viable. Our priorities for 2025–2030 focus on scaling pilots to pre-commercial arrays (10–30 MW) and proving the survivability and control systems necessary for the harsh marine environment.</p>
-    <p>But technology is only half the battle. We are equally committed to the social dimension. By aligning our deployment models with EU REC/CEC frameworks, we aim to ensure that coastal communities are not just onlookers to the blue economy, but shareholders in it.</p>
-    <p>The transition is flowing from the mountains to the sea. By integrating the predictability of waves with the scale of wind, and backing it with community ownership, we are not just reducing carbon; we are building a European energy system that is secure, sovereign, and sustainable for the long haul.</p>
+              <h2>The Economic Case for Wave Energy</h2>
+              <p>Why wave energy? The answer lies in complementarity.</p>
+              <ol>
+                <li><strong>Temporal Synergy:</strong> Wave resources often lag wind conditions. When the wind dies down, the waves (which are generated by winds far out at sea) often continue to roll in. This smooths out the peaks and troughs of power generation.</li>
+                <li><strong>Seasonal Matching:</strong> Wave energy is most powerful in the winter months. This perfectly aligns with Europe’s highest electricity demand for heating and lighting, providing security when the grid is most stressed.</li>
+                <li><strong>Cost Reduction through Hybridization:</strong> Considering that the economic reality that ocean space is expensive. By co-locating wave energy converters with floating wind farms, we can share the most capital-intensive assets: the export cables, the substations, and the maintenance vessels. This drastically lowers the Levelized Cost of Energy (LCOE).</li>
+              </ol>
+              
+              <figure style={{ textAlign: 'center', margin: '30px 0' }}>
+                <img 
+                  src="seaEc.png" 
+                  alt="Chart showing global electricity generation mix 2023" 
+                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+                />
+                <figcaption style={{ fontSize: '0.9em', color: '#64748b', marginTop: '10px', fontStyle: 'italic' }}>
+                </figcaption>
+              </figure>
 
-    <div class="data-box">
-      <h3>Key Data Snapshot</h3>
-      <ul>
-        <li>
-          <span class="data-label">Demographics</span>
-          <span>Global population 9.7 billion by 2050; 68% urbanized</span>
-        </li>
-        <li>
-          <span class="data-label">Current Mix</span>
-          <span>Renewables hit ~30% of global electricity in 2023</span>
-        </li>
-        <li>
-          <span class="data-label">EU Targets</span>
-          <span>42.5% Renewable Energy by 2030; 40 GW ocean energy by 2050</span>
-        </li>
-        <li>
-          <span class="data-label">Pipeline</span>
-          <span>165 MW of ocean energy projects in European waters</span>
-        </li>
-      </ul>
-    </div>
+              <p>The market is responding. According to Ocean Energy Europe’s 2024 <em>Stats & Trends</em>, there is currently a 165 MW pipeline of pre-commercial projects across 15 farms. Private investment is rising as the technology graduates from "experimental" to "bankable".</p>
 
-    <hr>
-    <p class="footer-text">Developed by <strong>Gianmaria Giannini</strong>, updated in 2026 to reflect current science, policy and market developments.</p>
-  </div>
+              <h2>The WEC-Pro Vision: A Resilient, Blue Future</h2>
+              <p>At WEC-Pro, we view wave energy not as a competitor to wind or solar, but as the partner that makes the whole system viable. Our priorities for 2025–2030 focus on scaling pilots to pre-commercial arrays (10–30 MW) and proving the survivability and control systems necessary for the harsh marine environment.</p>
+              <p>But technology is only half the battle. We are equally committed to the social dimension. By aligning our deployment models with EU REC/CEC frameworks, we aim to ensure that coastal communities are not just onlookers to the blue economy, but shareholders in it.</p>
+              <p>The transition is flowing from the mountains to the sea. By integrating the predictability of waves with the scale of wind, and backing it with community ownership, we are not just reducing carbon; we are building a European energy system that is secure, sovereign, and sustainable for the long haul.</p>
+
+              <div className="data-box">
+                <h3>Key Data Snapshot</h3>
+                <ul>
+                  <li>
+                    <span className="data-label">Demographics</span>
+                    <span>Global population 9.7 billion by 2050; 68% urbanized</span>
+                  </li>
+                  <li>
+                    <span className="data-label">Current Mix</span>
+                    <span>Renewables hit ~30% of global electricity in 2023</span>
+                  </li>
+                  <li>
+                    <span className="data-label">EU Targets</span>
+                    <span>42.5% Renewable Energy by 2030; 40 GW ocean energy by 2050</span>
+                  </li>
+                  <li>
+                    <span className="data-label">Pipeline</span>
+                    <span>165 MW of ocean energy projects in European waters</span>
+                  </li>
+                </ul>
+              </div>
+
+              <hr />
+              <p className="footer-text">Developed by <strong>Gianmaria Giannini</strong>, updated in 2026 to reflect current science, policy and market developments.</p>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
 </body>
 </html>
+
+```
